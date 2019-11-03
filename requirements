@@ -1,3 +1,5 @@
 ansible
 molecule
 docker
+python-consul
+flask

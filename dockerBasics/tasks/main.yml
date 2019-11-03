@@ -1,0 +1,47 @@
+---
+- name: Create a volume
+  docker_volume:
+    name: portainer_data
+
+
+- name: Portainer
+  docker_container:
+    name: portainer
+    image: portainer/portainer
+    state: started
+    detach: true
+    recreate: yes
+    restart_policy: always
+    published_ports:
+      - 8000:8000
+      - 9000:9000
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
+  register: portainer_docker
+
+- set_fact:
+    portainer_is_running: "{{ portainer_docker.ansible_facts.docker_container.State.Running }}"
+
+- set_fact:
+    portainer_endpoint: "http://{{ portainer_docker.ansible_facts.docker_container.NetworkSettings.IPAddress }}:9000/api"
+
+- name: "Check!!!"
+  debug:
+    msg: "{{ portainer_is_running }} // {{ portainer_endpoint }}"
+
+- name: Check container status
+  fail:
+    msg: "Portainer did not start: {{ portainer_is_running }}"
+  when: not portainer_is_running
+
+- name: Configure admin user password
+  uri:
+    url: "{{ portainer_endpoint }}/users/admin/init"
+    method: POST
+    return_content: true
+    body_format: json
+    body: '{ "Username":"{{ admin_user }}", "Password":"{{ admin_password }}"}'
+    status_code: 200, 409
+
+

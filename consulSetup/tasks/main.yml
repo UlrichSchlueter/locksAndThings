@@ -1,0 +1,36 @@
+---
+
+- name: Consul Server
+  docker_container:
+    name: consul-server
+    image: consul
+    command: agent -server -ui -node=server-1 -bootstrap-expect=1 -client=0.0.0.0
+    state: started
+    detach: true
+    recreate: yes
+    restart_policy: always
+    published_ports:
+      - 8500:8500
+      - 8600:8600/udp
+  register: consul_docker
+ 
+
+- set_fact:
+    consul_is_running: "{{ consul_docker.ansible_facts.docker_container.State.Running }}"
+
+
+- name: "Check!!!"
+  debug:
+    msg: "Consul is running {{ consul_is_running }} "
+
+- name: Check container status
+  fail:
+    msg: "Consul did not start"
+  when: not consul_is_running
+
+
+- name: Install consul
+  unarchive:
+    src: https://releases.hashicorp.com/consul/1.1.0/consul_1.1.0_linux_amd64.zip
+    dest: /tmp 
+    remote_src: yes

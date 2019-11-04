@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script  src="static/js/index.js"></script>
+<title>ConsulServer</title>
+</head>
+<body>
+      
+
+        <div class="form-group">
+        <label for="SessionField">Session ID:<input type="textArea" size="70" id="SessionField" value="{{ mData.sessionID}}"></label> <br>
+        <label for="LockField">LockField         :<input type="text" id="LockField" value="{{ mData.lockField}}"> </label>
+              
+        <label for="IsLocked">Lock Status        :<input type="text" id="IsLocked" value="{{ mData.locked}}"></label>
+             
+       
+        <button type="submit" id="Button1" class="btn btn-default" onclick="lockButton()" >Lock</button>
+        <button type="submit" id="Button2"class="btn btn-default" onclick="unlockButton()">Unlock</button>
+        <br>
+
+        <label for="LockFieldMultiple">Lock Multiple:<input type="text" id="LockFieldMultiple" value="{{ mData.lockField}}"> </label>
+              
+        <label for="IsLockedMultiple">Status Multi:<input type="text" id="IsLockedMultiple" value="{{ mData.locked}}"></label>
+             
+        <button type="submit" id="Button3" class="btn btn-default" onclick="lockMultipleButton()" >LockMultiple</button>
+        <button type="submit" id="Button4"class="btn btn-default" onclick="unlockMultipleButton()">UnlockMultiple</button>
+
+    </div>
+
+    
+
+    <table  id="logger" style="width:100%">
+            <tr>
+              <th>Time</th>
+              <th>Action</th> 
+              <th>sessionID</th>  
+              <th>locked</th>    
+              <th>lockField</th>  
+              <th>message/error</th> 
+             
+            </tr>
+            <tr>
+                  
+            </tr>
+          </table>
+
+</body>
+</html>
